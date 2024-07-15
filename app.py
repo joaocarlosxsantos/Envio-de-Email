@@ -21,10 +21,10 @@ class EmailForm(FlaskForm):
     submit = SubmitField('Send')
 
 def send_email(sender, subject, recipients, message, image_path):
-    smtp_server = 'smtp.yourprovider.com'
+    smtp_server = 'smtp-mail.outlook.com'
     smtp_port = 587
-    smtp_user = 'your_email@example.com'
-    smtp_password = 'your_password'
+    smtp_user = 'joaocxs10@outlook.com'
+    smtp_password = 'Jotafk@120'
 
     server = smtplib.SMTP(smtp_server, smtp_port)
     server.starttls()
