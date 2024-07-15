@@ -4,25 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Envio de Emails</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="email"],
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            resize: vertical;
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        #status {
+            margin-top: 12px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <form id="emailForm">
-        <label for="from">Remetente:</label>
-        <input type="email" id="from" name="from" required><br><br>
+    <div class="container">
+        <h2 style="text-align: center;">Envio de Emails</h2>
+        <form id="emailForm">
+            <label for="from">Remetente:</label>
+            <input type="email" id="from" name="from" required>
 
-        <label for="subject">Assunto:</label>
-        <input type="text" id="subject" name="subject" required><br><br>
+            <label for="subject">Assunto:</label>
+            <input type="text" id="subject" name="subject" required>
 
-        <label for="emails">Lista de Emails (separados por vírgula):</label><br>
-        <textarea id="emails" name="emails" rows="10" cols="30" required></textarea><br><br>
+            <label for="emails">Lista de Emails (separados por vírgula):</label>
+            <textarea id="emails" name="emails" rows="5" required></textarea>
 
-        <label for="message">Mensagem:</label><br>
-        <textarea id="message" name="message" rows="10" cols="30" required></textarea><br><br>
+            <label for="message">Mensagem:</label>
+            <textarea id="message" name="message" rows="10" required></textarea>
 
-        <button type="submit">Enviar</button>
-    </form>
+            <button type="submit">Enviar</button>
+        </form>
 
-    <div id="status"></div>
+        <div id="status" style="text-align: center;"></div>
+    </div>
 
     <script>
         document.getElementById('emailForm').addEventListener('submit', function(event) {
