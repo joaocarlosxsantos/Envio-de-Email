@@ -31,8 +31,8 @@ const server = http.createServer((req, res) => {
             const transporter = nodemailer.createTransport({
                 service: 'Outlook',
                 auth: {
-                    user: 'your-email@example.com',
-                    pass: 'your-email-password'
+                    user: 'joaocxs10@outlook.com',
+                    pass: 'Jotafk@120'
                 }
             });
 
