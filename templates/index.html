@@ -1,34 +1,40 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Envio Massivo de E-mails</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Mass Email Sender</title>
 </head>
 <body>
     <div class="container">
-        <h1>Envio Massivo de E-mails</h1>
-        <form id="emailForm" action="/send_emails" method="post" enctype="multipart/form-data">
-            <label for="subject">Assunto:</label>
-            <input type="text" id="subject" name="subject" required>
-            
-            <label for="emails">Lista de E-mails (separados por vírgulas):</label>
-            <textarea id="emails" name="emails" required></textarea>
-            
-            <label for="message">Mensagem:</label>
-            <textarea id="message" name="message" required></textarea>
-            
-            <input type="submit" value="Enviar">
+        <h1>Send Mass Emails</h1>
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.sender.label }}<br>
+                {{ form.sender(size=32) }}
+            </div>
+            <div class="form-group">
+                {{ form.subject.label }}<br>
+                {{ form.subject(size=64) }}
+            </div>
+            <div class="form-group">
+                {{ form.recipients.label }}<br>
+                {{ form.recipients(rows=5) }}
+            </div>
+            <div class="form-group">
+                {{ form.message.label }}<br>
+                {{ form.message(rows=10) }}
+            </div>
+            <div class="form-group">
+                {{ form.image.label }}<br>
+                {{ form.image() }}
+            </div>
+            <div class="form-group">
+                {{ form.submit() }}
+            </div>
         </form>
-        
-        <div id="loading">Enviando...</div>
     </div>
-
-    <script>
-        document.getElementById('emailForm').onsubmit = function() {
-            document.getElementById('loading').style.display = 'block';
-        }
-    </script>
 </body>
 </html>
