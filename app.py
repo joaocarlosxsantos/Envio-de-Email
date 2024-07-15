@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template_string
+from flask import Flask, request, render_template
 import win32com.client as win32
 import time
 
@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template_string(open('index.html').read())
+    return render_template('index.html')
 
 @app.route('/send_emails', methods=['POST'])
 def send_emails():

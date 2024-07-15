@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envio Massivo de E-mails</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Envio Massivo de E-mails</h1>
+        <form id="emailForm" action="/send_emails" method="post" enctype="multipart/form-data">
+            <label for="subject">Assunto:</label>
+            <input type="text" id="subject" name="subject" required>
+            
+            <label for="emails">Lista de E-mails (separados por vírgulas):</label>
+            <textarea id="emails" name="emails" required></textarea>
+            
+            <label for="message">Mensagem:</label>
+            <textarea id="message" name="message" required></textarea>
+            
+            <input type="submit" value="Enviar">
+        </form>
+        
+        <div id="loading">Enviando...</div>
+    </div>
+
+    <script>
+        document.getElementById('emailForm').onsubmit = function() {
+            document.getElementById('loading').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
