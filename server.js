@@ -27,7 +27,7 @@ const transporter = nodemailer.createTransport({
 });
 
 app.post('/send-emails', upload.array('attachments'), (req, res) => {
-    const sender = req.body.sender;
+    const sender = env.SMTP_USER;
     const subject = req.body.subject;
     const recipients = req.body.recipients.split(',');
     const message = req.body.message;
