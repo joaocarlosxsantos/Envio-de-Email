@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envio de Emails</title>
+</head>
+<body>
+    <form id="emailForm">
+        <label for="from">Remetente:</label>
+        <input type="email" id="from" name="from" required><br><br>
+
+        <label for="subject">Assunto:</label>
+        <input type="text" id="subject" name="subject" required><br><br>
+
+        <label for="emails">Lista de Emails (separados por vírgula):</label><br>
+        <textarea id="emails" name="emails" rows="10" cols="30" required></textarea><br><br>
+
+        <label for="message">Mensagem:</label><br>
+        <textarea id="message" name="message" rows="10" cols="30" required></textarea><br><br>
+
+        <button type="submit">Enviar</button>
+    </form>
+
+    <div id="status"></div>
+
+    <script>
+        document.getElementById('emailForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            document.getElementById('status').innerText = 'Enviando...';
+            
+            const formData = new FormData(event.target);
+            fetch('/send_emails', {
+                method: 'POST',
+                body: JSON.stringify(Object.fromEntries(formData)),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('status').innerText = 'Emails enviados com sucesso!';
+                } else {
+                    document.getElementById('status').innerText = 'Erro ao enviar emails: ' + data.error;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
