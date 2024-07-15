@@ -1,21 +1,30 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const sgMail = require('@sendgrid/mail');
+const nodemailer = require('nodemailer');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;
-
-// Configuração do SendGrid
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // Configuração do multer para upload de arquivos
 const upload = multer({ dest: 'uploads/' });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
+
+// Configuração do nodemailer
+const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    secure: false, // true para 465, false para outras portas
+    auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS
+    }
+});
 
 app.post('/send-emails', upload.array('attachments'), (req, res) => {
     const sender = req.body.sender;
@@ -35,16 +44,16 @@ app.post('/send-emails', upload.array('attachments'), (req, res) => {
 
     for (let i = 0; i < recipients.length; i += chunkSize) {
         const chunk = recipients.slice(i, i + chunkSize);
-        const msg = {
-            to: chunk,
+        const mailOptions = {
             from: sender,
+            to: chunk,
             subject: subject,
             html: message,
             bcc: chunk,
             attachments: attachments
         };
 
-        promises.push(sgMail.send(msg));
+        promises.push(transporter.sendMail(mailOptions));
     }
 
     Promise.all(promises)
