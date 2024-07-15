@@ -1,7 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const sgMail = require('@sendgrid/mail');
+const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -9,10 +11,13 @@ const port = process.env.PORT || 3000;
 // Configuração do SendGrid
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+// Configuração do multer para upload de arquivos
+const upload = multer({ dest: 'uploads/' });
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-app.post('/send-emails', (req, res) => {
+app.post('/send-emails', upload.array('attachments'), (req, res) => {
     const sender = req.body.sender;
     const subject = req.body.subject;
     const recipients = req.body.recipients.split(',');
@@ -20,6 +25,13 @@ app.post('/send-emails', (req, res) => {
 
     const chunkSize = 100;
     let promises = [];
+    let attachments = req.files.map(file => {
+        return {
+            filename: file.originalname,
+            path: file.path,
+            contentType: file.mimetype
+        };
+    });
 
     for (let i = 0; i < recipients.length; i += chunkSize) {
         const chunk = recipients.slice(i, i + chunkSize);
@@ -29,6 +41,7 @@ app.post('/send-emails', (req, res) => {
             subject: subject,
             html: message,
             bcc: chunk,
+            attachments: attachments
         };
 
         promises.push(sgMail.send(msg));
@@ -36,6 +49,8 @@ app.post('/send-emails', (req, res) => {
 
     Promise.all(promises)
         .then(() => {
+            // Remover arquivos temporários
+            req.files.forEach(file => fs.unlinkSync(file.path));
             res.json({ message: 'E-mails enviados com sucesso!' });
         })
         .catch(error => {

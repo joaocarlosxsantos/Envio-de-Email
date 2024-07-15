@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Envio de E-mails Massivos</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -69,14 +68,6 @@
             margin-top: 20px;
         }
     </style>
-    <script>
-        tinymce.init({
-            selector: '#message',
-            plugins: 'image link media',
-            toolbar: 'undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media',
-            menubar: false
-        });
-    </script>
 </head>
 <body>
     <div class="container">
@@ -94,6 +85,9 @@
             <label for="message">Mensagem:</label>
             <textarea id="message" name="message" rows="10" required></textarea>
             
+            <label for="attachments">Anexar Imagens:</label>
+            <input type="file" id="attachments" name="attachments" multiple accept="image/*">
+            
             <button type="submit">Enviar</button>
         </form>
         <div id="sendingAnimation">
@@ -107,7 +101,6 @@
                 document.getElementById('sendingAnimation').style.display = 'block';
                 
                 const formData = new FormData(event.target);
-                formData.set('message', tinymce.get('message').getContent());
                 
                 fetch('/send-emails', {
                     method: 'POST',
