@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Envio de E-mails</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app">
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M3 6.5C3 5.67 3.67 5 4.5 5h15c.83 0 1.5.67 1.5 1.5v11c0 .83-.67 1.5-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5v-11Z" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M4 6.5 12 13l8-6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <div>
+        <h1>Envio de E-mails</h1>
+        <p class="subtitle">Disparo em massa via BCC, em lotes</p>
+      </div>
+    </div>
+    <span class="badge" id="modeBadge" hidden>Modo de teste</span>
+  </header>
+
+  <main class="layout">
+
+    <!-- ==================== FORMULÁRIO ==================== -->
+    <section class="card">
+      <form id="emailForm" novalidate>
+
+        <div class="field">
+          <label for="from">Remetente</label>
+          <input type="text" id="from" name="from" placeholder="Seu Nome <voce@empresa.com>" autocomplete="off">
+          <p class="hint">Opcional. O envio real sempre usa a conta configurada no servidor; isto define apenas o nome exibido.</p>
+        </div>
+
+        <div class="field">
+          <label for="subject">Assunto</label>
+          <input type="text" id="subject" name="subject" placeholder="Assunto do e-mail" required autocomplete="off">
+        </div>
+
+        <div class="field">
+          <div class="field-header">
+            <label for="emails">Lista de e-mails</label>
+            <div class="stats" id="emailStats" aria-live="polite"></div>
+          </div>
+
+          <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Importar arquivo .csv ou .txt com e-mails">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 16V4m0 0 4 4m-4-4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4 16v2.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            </svg>
+            <span>Arraste um arquivo <strong>.csv</strong> ou <strong>.txt</strong>, ou <button type="button" id="browseBtn" class="link-btn">selecione um arquivo</button></span>
+            <input type="file" id="fileInput" accept=".csv,.txt,text/csv,text/plain" hidden>
+          </div>
+
+          <textarea id="emails" name="emails" rows="6" placeholder="email1@empresa.com, email2@empresa.com, ..." required></textarea>
+
+          <div class="invalid-preview" id="invalidPreview" hidden></div>
+        </div>
+
+        <div class="field">
+          <div class="field-header">
+            <label for="message">Mensagem (HTML)</label>
+            <div class="tabs" role="tablist">
+              <button type="button" class="tab active" id="tabEdit" role="tab" aria-selected="true">Editar</button>
+              <button type="button" class="tab" id="tabPreview" role="tab" aria-selected="false">Pré-visualizar</button>
+            </div>
+          </div>
+          <textarea id="message" name="message" rows="10" placeholder="&lt;p&gt;Escreva aqui o conteúdo do e-mail...&lt;/p&gt;" required></textarea>
+          <iframe id="preview" class="preview" title="Pré-visualização da mensagem" hidden></iframe>
+        </div>
+
+        <button type="submit" id="sendBtn" class="btn-send">
+          <span class="btn-label">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 4.5 20.5 12 4 19.5l2.5-6.7L15 12 6.5 11.2 4 4.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            </svg>
+            Enviar e-mails
+          </span>
+          <span class="btn-spinner" hidden></span>
+        </button>
+      </form>
+    </section>
+
+    <!-- ==================== STATUS / PROGRESSO ==================== -->
+    <section class="card status-card" id="statusCard" hidden aria-live="polite">
+      <div class="status-head">
+        <h2 id="statusTitle">Enviando...</h2>
+        <span id="statusCount">0 / 0</span>
+      </div>
+
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <p class="status-detail" id="statusDetail">Preparando envio...</p>
+
+      <div class="result-banner" id="resultBanner" hidden></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+node_modules/
+.env
+*.log
+_backup_pre_limpeza_historico.bundle

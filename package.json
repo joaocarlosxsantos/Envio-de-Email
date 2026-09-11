@@ -1,15 +1,14 @@
 {
   "name": "enviodeemail",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "Ferramenta interna para envio de e-mails em massa via BCC.",
   "dependencies": {
     "nodemailer": "^6.9.14"
   }
